@@ -1,0 +1,277 @@
+{%extends 'base/base.html'%}
+
+
+{%block content%}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid green;
+    }
+    th{
+        padding: 8px;
+        text-align: center;
+        background-color: green;
+        color:white;
+    }
+    td {
+        border:0.25px solid gray;
+        padding: 8px;
+        text-align: center;
+    }
+    #con 
+    {
+
+       display:flex;
+       justify-content:flex-end;
+       padding:20px;
+    }
+
+    a
+    {
+        text-decoration:none
+
+    }
+    .check
+    {
+      color:green;
+    }
+    
+    .background {
+        height: 100%;
+        display: flex;
+        justify-content: flex-end;
+        background: url('your-background-image.jpg') no-repeat center center fixed;
+        background-size: cover;
+    }
+    
+    .overlay {
+        display: none; /* Initially hidden */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        align-items: center;
+        justify-content: center;
+        z-index: 1000; /* Ensures it sits above other content */
+    }
+    
+    .overlay-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        height:400px;
+        width:400px
+    }
+    
+    
+    .cut{
+        display:flex;
+        justify-content:flex-end;
+        flex-direction:row;
+        padding:10px;
+
+    }
+    
+    button {
+        padding: 10px 20px;
+        font-size: 1em;
+        margin-top: 20px;
+        cursor: pointer;
+    }
+    #address
+    {
+        width:400px;
+        height:30px;
+        border-radius:5px;
+        border:solid 0.5px green
+    }
+    #password
+    {
+        width:400px;
+        height:30px;
+        border-radius:5px;
+        border:solid 0.5px green
+    }
+    .hover-target
+    {
+        border-radius:5px;
+    }
+
+    .hover-target:hover {
+        background-color: green;
+        color: white; /* Optional: Change text color to white for contrast */
+    }
+    
+</style>
+
+<h2>Your Item</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Sno</th>
+            <th>image</th>
+            <th>product</th>
+            <th>price</th>
+            <th>quantity</th>
+            <th>total</th>
+           
+        </tr>
+    </thead>
+    <tbody id="bod">
+        
+    </tbody>
+</table>
+<div class="background">
+    <div id="con"><a href="/checkout/" id="openOverlay"><span class="check"><b>Check out</span></b></a></div>
+
+</div>
+<div class="overlay" id="overlay">
+    <div class="overlay-content">
+        <button id="closeOverlay" class ="cut">X</button>
+
+        <form action="/your_order/" method="post">{%csrf_token%}
+            <div>
+                <label for="address">Address:</label><br>
+                <input type="text" id="address" name="address" required>
+            </div>
+            <br>
+            <div>
+                <label for="password">phone no:</label><br>
+                <input type="text" id="password" name="phone no" required>
+            </div>
+            <button id="sendCart" class="hover-target">Check out</button>
+        </form>
+       
+    </div>
+</div>
+
+    
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+<script>
+   
+
+$(document).ready(function() {
+       
+    cart =JSON.parse(localStorage.getItem('cart'))
+   
+    if(localStorage.getItem('cart') != null){
+     $('#icon').empty() 
+    $('#icon').append(`<a href="/cart/" id="cart" ><span class="gree"><b>cart(${cart['sum']})</b></span></a>
+                       <div id="p"><a href="/register/" class="register"><span class="gree"><b>Register</b></span></a></div>
+                       <a href="/logout/" class="logout"><span class="gree"><b>Log out</b></span></a>`)
+    }
+    else
+    {
+        $('#icon').empty() 
+        $('#icon').append(`<a href="/cart/" id="cart" ><span class="gree"><b>cart(0)</b></span></a>
+                       <div id="p"><a href="/register/" class="register"><span class="gree"><b>Register</b></span></a></div>
+                       <a href="/logout/" class="logout"><span class="gree"><b>Log out</b></span></a>`)
+    }
+    
+           
+   
+    
+i=1
+sum =0
+console.log(cart['sum'])
+
+
+    for (let key in cart) {
+    if (cart.hasOwnProperty(key) && key != 'sum') {
+        console.log(key)
+        let qty = cart[key][0];
+        let name = cart[key][1];
+        let img = cart[key][2];
+        let price = cart[key][3];
+        let total =  qty*price
+        sum = sum+total
+        console.log(sum)
+
+        
+   
+     mystr = `<tr><td>${i}</td>
+              <td><img src="/media/${img}" style="height:110px"></img></td>
+              <td>${name}</td>
+              <td>${price}</td>
+              
+              <td>${qty}</td>
+              <td>${total}</td>
+             
+
+
+              </tr>
+
+              `
+    $('#bod').append(mystr)
+    
+i++;
+       
+  }
+}
+$('#bod').append(`<tr rowspan="5"><td colspan="6">${sum}</td></tr>`)
+
+});
+
+document.getElementById('openOverlay').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('overlay').style.display = 'flex';
+});
+
+document.getElementById('closeOverlay').addEventListener('click', function() {
+    document.getElementById('overlay').style.display = 'none';
+});
+
+document.getElementById('sendCart').addEventListener('click', function() {
+    // Retrieve the cart from localStorage
+
+    const cart = JSON.parse(localStorage.getItem('cart'))
+        
+  
+
+fetch('/order/', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+'X-CSRFToken': getCookie('csrftoken')  // Function to get CSRF token
+},
+body: JSON.stringify({ cart: cart })
+})
+.then(response => response.json())
+.then(data => {
+console.log('Success:', data);
+})
+.catch((error) => {
+console.error('Error:', error);
+});
+
+function getCookie(name) {
+let cookieValue = null;
+if (document.cookie && document.cookie !== '') {
+const cookies = document.cookie.split(';');
+for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+    }
+}
+}
+return cookieValue;
+
+
+}
+localStorage.clear()
+
+})
+
+
+</script>
+
+{%endblock%}

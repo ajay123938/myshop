@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+
+   <style>
+    /* styles.css */
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #F4F5FA;
+    }
+    
+    .container {
+        display: flex;
+        height: 100vh;
+    }
+    
+    .sidebar {
+        width: 250px;
+        color: white;
+        padding: 20px;
+        box-sizing: border-box;
+        height:100vh;
+        background-color:green;
+    }
+    .same:hover
+    {
+        background-color:blue;
+        color:white;
+    }
+    .sidebar h2 {
+        margin: 0;
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+    
+    .sidebar nav ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    
+    .sidebar nav ul li {
+        margin-bottom: 10px;
+    }
+    
+    .sidebar nav ul li a {
+        color: white;
+        text-decoration: none;
+        font-size: 18px;
+    }
+    
+    .sidebar nav ul li a.active {
+        background-color: #3E2C88;
+        display: block;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    
+    main {
+        flex: 1;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+    
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    
+    header input[type="search"] {
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        width: 300px;
+    }
+    
+    header .icons {
+        display:flex;
+        flex-direction:row;
+        justify-content: space-between;
+        
+
+       
+    }
+    .product-card img{
+        width:200px;
+        height:200px
+    }
+    #cart{
+        text-decoration:none;
+
+    }
+    .search
+    {
+        height:30px;
+        border-radius:5px;
+        width:300px;
+        border:1px solid green
+    }
+    .cart1{
+        margin:5px;
+    }
+    .register
+    {
+        margin:5px;
+        text-decoration:none;
+
+    }
+    .login
+    {
+        margin:5px;
+        text-decoration:none;
+
+    }
+    .gree
+    {
+        color:green;
+    }
+    .logout
+    {
+        text-decoration:none
+    }
+    .products, .best-products {
+        margin-bottom: 40px;
+    }
+    
+    .products h2, .best-products h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    
+    .product-grid {
+        display: flex;
+        gap: 20px;
+    }
+    
+    .product-card {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    
+
+    
+    .product-card h3 {
+        margin: 10px 0;
+        font-size: 18px;
+    }
+    
+    .product-card p {
+        font-size: 16px;
+        color: #333;
+    }
+    
+    .product-card button {
+        padding: 10px 20px;
+        background-color: green;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+   
+    .butto
+    {
+        height:38px;
+        background-color:green;
+        color:white;
+        font-family: Arial, sans-serif;
+        border-radius:5px;
+
+    }
+   
+
+   </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Bijay Fashion Readymade</h2>
+            <nav>
+                <ul>
+                    <li class="same"><a href="/cateogry/product">All Products</a></li>
+                    <li class="same"><a href="/cateogry/men" id="men">Men clothing</a></li>
+                    <li class="same"><a href="/cateogry/women" >women clothing</a></li>
+                    <li class="same"><a href="/cateogry/kids">kids clothing</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main>
+        <header>
+            <form  method="post">{%csrf_token%}
+            <input type="text"  name="search" placeholder="Search"  class="search">
+            <button type="submit" class="butto" >Search</button>
+            </form>
+            
+            <div class="icons" id="icon">
+                <a href="/cart/" id="cart" ><div id="cart2" class="cart1" ><span class="gree"><b>cart(0)</b></span></div></a>
+                <a href="/register/" class="register"><span class="gree"><b>Register</b></span></a>
+               <a href="/login1/"  class="login"><span class="gree"><b>Log in</b></span></a>
+
+
+            </div>
+        </header>
+    
+        {% block content %}
+        
+    </main>
+    </div>
+    
+        
+    <script>
+        
+    </script>
+        {% endblock %}
+   
+      
+    </body>
+</html>

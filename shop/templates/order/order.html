@@ -1,0 +1,73 @@
+{%extends 'base/base.html'%}
+{%block content%}
+<style>
+    /* Optional: Add some basic styling to the table */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    
+    th{
+        background-color: green;
+        border: 1px solid green;
+        padding: 8px;
+        text-align: center;
+        color:white
+
+    }
+     td {
+        border: 1px solid green;
+        padding: 8px;
+        text-align: center;
+
+    }
+    </style>
+    
+    
+    <h2>Your Order</h2>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>Sno</th>
+          <th>image</th>
+          <th>product</th>
+          <th>price</th>
+          <th>qty</th>
+          <th>status</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        {%for objs in order_objs%}
+        <tr>
+          
+          <td>{{forloop.counter}}</td>
+
+          <td><img src="/media/{{objs.product.img}}" style="height:110px"></img></td>
+          <td>{{objs.product.name}}</td>
+          <td>{{objs.product.price}}</td>
+          <td>{{objs.qty}}</td>
+          <td>{%if objs.status == False %}<span style="background-color: yellow;">Pending</span>
+            {%else%}
+            <span style="background-color: green; color:white">Confirmed</span>
+            {%endif%}
+          </td>
+          
+        </tr>
+        {%endfor%}
+        <!-- Add more rows here if needed -->
+      </tbody>
+    </table>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+      if(localStorage.getItem('cart') == null){
+        $('#icon').empty() 
+       $('#icon').append(`<a href="/cart/" id="cart" ><span class="gree"><b>cart(0)</b></span></a>
+                          <div id="p"><a href="/register/" class="register"><span class="gree"><b>Register</b></span></a></div>
+                          <a href="/logout/" class="logout"><span class="gree"><b>Log out</b></span></a>`)
+       }
+    </script>
+
+{%endblock%}
