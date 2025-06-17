@@ -1,0 +1,175 @@
+{% extends 'base/base.html' %}
+
+{%block start%}
+<style>
+    
+    
+    .product-grid {
+        display: flex;
+        gap: 20px;
+    }
+    
+    .product-card {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    
+    .product-card img {
+        width: 300px;
+        height: 300px;
+        margin-bottom: 10px;
+    }
+   
+    
+    .product-card h3 {
+        margin: 10px 0;
+        font-size: 18px;
+    }
+    
+    .product-card p {
+        font-size: 16px;
+        color: #333;
+    }
+    
+    
+    
+    
+</style>
+{%endblock%}
+{%block content%}
+<section class="products">
+
+    <h2>{%if objs.0.cateogry == product %}All Products {%else%}{{objs.0.cateogry}}'s Product{%endif%}</h2>
+    <div class="product-grid">
+        
+         {%for con in objs%}
+   
+    
+        <div class="product-card">
+            <img src="/media/{{con.img}}" alt="Gift Watch">
+            <h3>{{con.name}}</h3>
+            <p>{{con.price}}</p>
+           <div id ="parent{{con.id}}"><button id ="p{{con.id}}"  onclick="addToCart('{{con.id}}','{{con.name}}','{{con.img}}','{{con.price}}')">Add to cart</button>
+           </div>
+          
+        </div>
+        {% if forloop.counter|divisibleby:4 and forloop.counter > 0 and not forloop.last %}
+    </div><div class="product-grid">
+        {%endif%}
+        {%endfor%}
+    
+    
+   
+
+
+</section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+
+ 
+    
+
+    if(localStorage.getItem('cart') != null)
+    {
+        cart = JSON.parse(localStorage.getItem('cart'))
+        console.log(cart)
+    }
+    else{
+       var cart = {}
+    }
+    
+  function addToCart(id,name,img,price) {
+   
+
+
+
+
+if(cart[`${id}`] != undefined)
+{
+    cart[`${id}`][0] = cart[id][0] + 1
+    
+}
+
+else
+{
+    cart[`${id}`] = [1,name,img,price]
+    cart['sum'] = 1
+    
+    updateCart(cart)    
+}
+$(`#p${id}`).remove()
+var newElement = $(`<button onclick="increase(${id})">+</buttton><button>${cart[`${id}`][0]} in cart</buttton><button  onclick="decrease(${id})">-</buttton>`);
+    
+// Append the new element to the parent element
+$(`#parent${id}`).append(newElement);
+  }
+
+  function increase(id){
+    idstr = `${id}`
+    
+    cart[idstr][0] = cart[idstr][0] + 1
+    $(`#parent${id}`).empty()
+    var newElement = $(`<button onclick="increase(${id})">+</buttton><button>${cart[`${id}`][0]}</buttton><button  onclick="decrease(${id})">-</buttton>`);
+
+    $(`#parent${id}`).append(newElement);
+  
+
+    sum =0
+for (let key in cart) {
+    if (cart.hasOwnProperty(key)) {
+        let value = cart[key][0];
+
+        if (typeof value === 'number') {
+            sum += value;
+  
+  }
+}
+}
+cart['sum'] = 1+sum
+updateCart(cart)
+console.log(cart)
+document.getElementById('cart2').innerHTML =`<span class="gree"><b>cart(${sum})</b></span>`
+
+  }
+  function decrease(id)
+  {
+     idstr = `${id}`
+    if(cart[idstr][0] != 0){
+    cart[idstr][0] = cart[idstr][0] - 1
+    $(`#parent${id}`).empty()
+    var newElement = $(`<button onclick="increase(${id})">+</buttton><button>${cart[`${id}`][0]}</buttton><button  onclick="decrease(${id})">-</buttton>`);
+
+    $(`#parent${id}`).append(newElement);
+    console.log(cart)
+  }
+
+  sum =0
+for (let key in cart) {
+    if (cart.hasOwnProperty(key)) {
+        let value = cart[key][0];
+
+        if (typeof value === 'number') {
+            sum += value;
+
+  }
+}
+}
+cart['sum']= 1+sum
+updateCart(cart)
+document.getElementById('cart2').innerHTML =`<span class="gree"><b>cart(${sum})</b></span>`
+
+console.log(sum)
+  }
+
+  function updateCart(cart) {
+   
+    localStorage.setItem('cart', JSON.stringify(cart));
+   
+}
+    
+</script>
+{% endblock %}
