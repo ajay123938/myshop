@@ -13,7 +13,11 @@ import hmac
 
 
 # Create your views here.
-
+def home(request):
+       all_product = Product.objects.all()
+       all_product=  all_product.filter(name__icontains = request.POST.get('search'))
+       context = {'objs':all_product}
+       return render(request,'index.html',context)
 
 def  cateogry(request,str):
  if request.method == "POST":
