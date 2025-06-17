@@ -3,7 +3,7 @@ from .  import views
 from .views import custom_logout_view
 
 urlpatterns = [
-    path('/',views.home,name="home"),
+    path('',views.home,name="home"),
 
     path('cateogry/<str>',views.cateogry,name="cateogry"),
     path('login1/',views.login1,name="login1"),
