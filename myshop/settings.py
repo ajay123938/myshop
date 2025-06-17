@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-c16oj=5o^c*ilds=7utws6q=9o=_jm5^&vlw!1dhxds#p-(90='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -76,12 +76,12 @@ WSGI_APPLICATION = 'myshop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
 }
+
 
 
 # Password validation
@@ -123,7 +123,7 @@ import os
 STATIC_URL = 'static/'
 STATIC_ROOT =os.path.join(BASE_DIR,'staticfiles')
 
-STATCFILES_DIR ={
+STATCFILES_DIRS ={
     os.path.join(BASE_DIR,"public/static")
 
 }
