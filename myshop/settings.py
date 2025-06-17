@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-import django_heroku
+
 import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -127,7 +127,7 @@ STATCFILES_DIRS ={
     os.path.join(BASE_DIR,"public/static")
 
 }
-django_heroku.settings(locals())
+
 MEDIA_ROOT = os.path.join(BASE_DIR,'public/static')
 MEDIA_URL='/media/'
 # Default primary key field type
