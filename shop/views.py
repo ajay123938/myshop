@@ -57,7 +57,7 @@ def  cateogry(request,str):
        context = {'objs':all_product}
 
  
- return render(request,'product/product.html',context)
+ return render(request,'product/index.html',context)
 
 
 
