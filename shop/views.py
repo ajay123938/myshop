@@ -13,6 +13,9 @@ import hmac
 
 
 # Create your views here.
+def home(request):
+     return render(request,'index.html')
+
 def  cateogry(request,str):
  if request.method == "POST":
     if str == 'men':
